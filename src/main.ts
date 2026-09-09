@@ -12,10 +12,12 @@ class AcodePlugin {
 	): Promise<void> {
 		this.editorLanguages = acode.require("editorLanguages");
 		this.editorLanguages.register("lightvm", "lvm", "LightVM", async () => {
-			const { LRLanguage } = acode.require("@codemirror/language");
+			const { HighlightStyle, LRLanguage, syntaxHighlighting } = acode.require(
+				"@codemirror/language",
+			);
 			const { styleTags, tags } = acode.require("@lezer/highlight");
 
-			return LRLanguage.define({
+			const language = LRLanguage.define({
 				parser: parser.configure({
 					props: [
 						styleTags({
@@ -25,12 +27,23 @@ class AcodePlugin {
 							PrimitiveType: tags.typeName,
 							Number: tags.number,
 							String: tags.string,
-							"OpenSquareBracket CloseSquareBracket OpenBrace CloseBrace OpenParenthesis CloseParenthesis":
-								tags.punctuation,
+							"OpenSquareBracket CloseSquareBracket": tags.squareBracket,
+							"OpenParenthesis CloseParenthesis": tags.paren,
+							"OpenBrace CloseBrace": tags.brace,
 						}),
 					],
 				}),
 			});
+			const delimiterHighlightStyle = HighlightStyle.define(
+				[
+					{ tag: tags.squareBracket, color: "#e06c75" },
+					{ tag: tags.paren, color: "#61afef" },
+					{ tag: tags.brace, color: "#c678dd" },
+				],
+				{ scope: language },
+			);
+
+			return [language, syntaxHighlighting(delimiterHighlightStyle)];
 		});
 	}
 
