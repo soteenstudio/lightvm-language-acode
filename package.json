@@ -1,7 +1,7 @@
 {
   "name": "lightvm-language",
   "version": "0.1.0",
-  "description": "VS Code language support for LightVM bytecode.",
+  "description": "Acode language support for LightVM bytecode.",
   "main": "dist/main.js",
   "repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
   "author": "SoTeen Studio",
