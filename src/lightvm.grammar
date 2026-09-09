@@ -1,0 +1,10 @@
+@top Document { (ValKeyword | SetKeyword | Identifier | Character)* }
+
+ValKeyword { @specialize<Identifier, "val"> }
+SetKeyword { @specialize<Identifier, "set"> }
+
+@tokens {
+	Identifier { $[A-Za-z_] $[A-Za-z0-9_]* }
+	Character { _ }
+	@precedence { Identifier, Character }
+}
