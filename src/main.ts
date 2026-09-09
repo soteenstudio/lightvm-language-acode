@@ -9,6 +9,7 @@ class AcodePlugin {
 		_cacheFileUrl: string,
 	): Promise<void> {
 		// plugin initialisation
+    // Implement the lang logic here
 	}
 
 	async destroy(): Promise<void> {
