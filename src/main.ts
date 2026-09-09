@@ -47,7 +47,7 @@ class AcodePlugin {
 				} while (cursor.next());
 
 				const explanation =
-					"Positions are zero-based source bytecode indexes before optimization.";
+					"IP values are zero-based source bytecode indexes before optimization. Line and column are 1-based.";
 				const message = entries.length
 					? `${explanation}\n\n${entries.join("\n")}`
 					: `${explanation}\n\nNo LightVM instructions found.`;
