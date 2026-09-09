@@ -5,6 +5,7 @@ class AcodePlugin {
 	baseUrl = "";
 	private editorLanguages?: Acode.EditorLanguages;
 	private commands?: Acode.Commands;
+	private toggleInstructionPointers?: (view: any) => boolean;
 
 	async init(
 		_page: Acode.WCPage,
@@ -15,46 +16,21 @@ class AcodePlugin {
 		this.commands = acode.require("commands");
 		this.commands.addCommand({
 			name: "lightvm.showInstructionPointers",
-			description: "Show LightVM instruction pointers",
+			description: "Toggle LightVM instruction pointers",
 			bindKey: {
-				win: "Ctrl-Alt-I",
-				linux: "Ctrl-Alt-I",
-				mac: "Ctrl-Alt-I",
+				win: "Shift-I",
+				linux: "Shift-I",
+				mac: "Shift-I",
 			},
 			readOnly: true,
 			requiresView: true,
-			exec: (view) => {
-				if (!view?.state) return false;
-
-				const { syntaxTree } = acode.require("@codemirror/language");
-				const state = view.state as any;
-				const entries: string[] = [];
-				const cursor = syntaxTree(state).cursor();
-
-				do {
-					if (cursor.name !== "Opcode") continue;
-
-					const line = state.doc.lineAt(cursor.from);
-					const text = state.doc.sliceString(cursor.from, cursor.to);
-					entries.push(
-						`IP ${entries.length}  Line ${line.number}, Column ${cursor.from - line.from + 1}  ${text}`,
-					);
-				} while (cursor.next());
-
-				const explanation =
-					"Positions are zero-based source bytecode indexes before optimization.";
-				const message = entries.length
-					? `${explanation}\n\n${entries.join("\n")}`
-					: `${explanation}\n\nNo LightVM instructions found.`;
-				acode.alert("LightVM instruction pointers", message);
-				return true;
-			},
+			exec: (view) => this.toggleInstructionPointers?.(view) ?? false,
 		});
 		this.editorLanguages.register("lightvm", "lvm", "LightVM", async () => {
 			const { foldService, indentService, LRLanguage, syntaxTree } =
 				acode.require("@codemirror/language");
 			const { completeFromList } = acode.require("@codemirror/autocomplete");
-			const { Decoration, EditorView, ViewPlugin } = acode.require(
+			const { Decoration, EditorView, ViewPlugin, WidgetType } = acode.require(
 				"@codemirror/view",
 			);
 			const { styleTags, tags } = acode.require("@lezer/highlight");
@@ -272,6 +248,98 @@ class AcodePlugin {
 				".cm-lightvm-bracket-purple": { color: "#c678dd" },
 			});
 
+			class InstructionPointerWidget extends WidgetType {
+				constructor(private readonly index: number) {
+					super();
+				}
+
+				eq(other: InstructionPointerWidget) {
+					return this.index === other.index;
+				}
+
+				toDOM() {
+					const element = document.createElement("span");
+					element.className = "cm-lightvm-instruction-pointer";
+					element.textContent = `[IP ${this.index}]`;
+					element.setAttribute("aria-label", `Instruction pointer ${this.index}`);
+					return element;
+				}
+
+				ignoreEvent() {
+					return true;
+				}
+			}
+
+			const instructionPointerPlugins = new WeakMap<any, any>();
+			const buildInstructionPointers = (view: any, enabled: boolean) => {
+				if (!enabled) return Decoration.none;
+
+				const ranges: any[] = [];
+				const cursor = syntaxTree(view.state).cursor();
+				let index = 0;
+
+				do {
+					if (cursor.name !== "Opcode") continue;
+					ranges.push(
+						Decoration.widget({
+							widget: new InstructionPointerWidget(index++),
+							side: 1,
+						}).range(cursor.to),
+					);
+				} while (cursor.next());
+
+				return Decoration.set(ranges, true);
+			};
+			const instructionPointers = ViewPlugin.fromClass(
+				class {
+					decorations: any;
+					private enabled = false;
+
+					constructor(private readonly view: any) {
+						this.decorations = Decoration.none;
+						instructionPointerPlugins.set(view, this);
+					}
+
+					toggle() {
+						this.enabled = !this.enabled;
+						this.decorations = buildInstructionPointers(this.view, this.enabled);
+						this.view.dispatch({});
+					}
+
+					update(update: any) {
+						if (
+							this.enabled &&
+							(update.docChanged ||
+								update.viewportChanged ||
+								syntaxTree(update.startState) !== syntaxTree(update.state))
+						) {
+							this.decorations = buildInstructionPointers(update.view, true);
+						}
+					}
+
+					destroy() {
+						instructionPointerPlugins.delete(this.view);
+					}
+				},
+				{ decorations: (value: any) => value.decorations },
+			);
+			const instructionPointerTheme = EditorView.baseTheme({
+				".cm-lightvm-instruction-pointer": {
+					color: "#7f8c98",
+					fontSize: "0.8em",
+					fontStyle: "italic",
+					marginLeft: "0.6em",
+					userSelect: "none",
+				},
+			});
+			this.toggleInstructionPointers = (view: any) => {
+				const plugin = instructionPointerPlugins.get(view);
+				if (!plugin) return false;
+
+				plugin.toggle();
+				return true;
+			};
+
 			return [
 				language,
 				language.data.of({ autocomplete: lightVMCompletions }),
@@ -279,6 +347,8 @@ class AcodePlugin {
 				lightVMFold,
 				rainbowBrackets,
 				rainbowBracketTheme,
+				instructionPointers,
+				instructionPointerTheme,
 			];
 		});
 	}
@@ -286,6 +356,7 @@ class AcodePlugin {
 	async destroy(): Promise<void> {
 		this.commands?.removeCommand("lightvm.showInstructionPointers");
 		this.commands = undefined;
+		this.toggleInstructionPointers = undefined;
 		this.editorLanguages?.unregister("lightvm");
 		this.editorLanguages = undefined;
 	}
