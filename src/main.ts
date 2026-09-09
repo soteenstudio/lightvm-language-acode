@@ -22,6 +22,7 @@ class AcodePlugin {
 							Opcode: tags.keyword,
 							ValKeyword: tags.keyword,
 							SetKeyword: tags.keyword,
+							PrimitiveType: tags.typeName,
 						}),
 					],
 				}),

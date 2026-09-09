@@ -1,7 +1,13 @@
-@top Document { (ValKeyword | SetKeyword | Opcode | Identifier | Character)* }
+@top Document { (ValKeyword | SetKeyword | Opcode | PrimitiveType | Identifier | Character)* }
 
 ValKeyword { @specialize<Identifier, "val"> }
 SetKeyword { @specialize<Identifier, "set"> }
+PrimitiveType {
+	@specialize<Identifier,
+		"sht" | "int" | "lng" | "oct" | "hlf" | "flt" | "dbl" | "str" |
+		"i16" | "i32" | "i64" | "i128" | "f16" | "f32" | "f64"
+	>
+}
 Opcode {
 	@specialize<Identifier,
 		"push" | "get" | "dup" | "swap" | "shrink" | "truncate" |
