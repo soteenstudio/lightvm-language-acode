@@ -1,6 +1,7 @@
 import plugin from "../plugin.json";
 import { parser } from "./language/lightvm-parser";
 
+// Added icon to .lvm file
 class AcodePlugin {
 	baseUrl = "";
 	private editorLanguages?: Acode.EditorLanguages;
