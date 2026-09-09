@@ -5,4 +5,5 @@ export const
   Identifier = 3,
   SetKeyword = 4,
   Opcode = 5,
-  Character = 6
+  PrimitiveType = 6,
+  Character = 7
