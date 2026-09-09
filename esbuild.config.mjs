@@ -44,6 +44,7 @@ const zipPlugin = {
 const buildConfig = {
   entryPoints: {
     main: "src/main.ts",
+    "lightvm-language.worker": "src/lightvm-language.worker.ts",
   },
   bundle: true,
   minify: true,

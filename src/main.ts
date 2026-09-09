@@ -4,12 +4,57 @@ import { parser } from "./lightvm-parser";
 class AcodePlugin {
 	baseUrl = "";
 	private editorLanguages?: Acode.EditorLanguages;
+	private lsp?: Acode.LspApi;
+
+	private registerLanguageServer(): void {
+		const serverId = "lightvm-lsp";
+		const runtimeId = "lightvm-worker";
+		const lsp = acode.require("lsp");
+
+		lsp.runtimes.unregister(runtimeId);
+		lsp.runtimes.register({
+			id: runtimeId,
+			label: "LightVM Language Server",
+			priority: 200,
+			canHandle: (server: Acode.LspServerDefinition) => server.id === serverId,
+			start: async () => {
+				const handle = lsp.workers.createTransport({
+					url: `${this.baseUrl}lightvm-language.worker.js`,
+					name: "LightVM Language Server",
+					serverId,
+					startupTimeout: 10_000,
+				});
+
+				return {
+					kind: "transport",
+					providerId: runtimeId,
+					transport: handle,
+					dispose: () => handle.dispose(),
+				};
+			},
+		});
+
+		lsp.upsert(
+			lsp.defineServer({
+				id: serverId,
+				label: "LightVM",
+				languages: ["lvm"],
+				runtimes: [runtimeId],
+				transport: { kind: "external" },
+				useWorkspaceFolders: true,
+				enabled: true,
+				startupTimeout: 10_000,
+			}),
+		);
+		this.lsp = lsp;
+	}
 
 	async init(
 		_page: Acode.WCPage,
 		_cacheFile: Acode.FileSystem,
 		_cacheFileUrl: string,
 	): Promise<void> {
+		this.registerLanguageServer();
 		this.editorLanguages = acode.require("editorLanguages");
 		this.editorLanguages.register("lightvm", "lvm", "LightVM", async () => {
 			const { LRLanguage, syntaxTree } = acode.require("@codemirror/language");
@@ -181,6 +226,9 @@ class AcodePlugin {
 	}
 
 	async destroy(): Promise<void> {
+		this.lsp?.servers.unregister("lightvm-lsp");
+		this.lsp?.runtimes.unregister("lightvm-worker");
+		this.lsp = undefined;
 		this.editorLanguages?.unregister("lightvm");
 		this.editorLanguages = undefined;
 	}

@@ -9,7 +9,7 @@
   "repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
   "icon": "icon.png",
   "files": [],
-  "minVersionCode": 290,
+  "minVersionCode": 1002,
   "license": "Apache-2.0",
   "keywords": [],
   "price": 0,
