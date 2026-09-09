@@ -1,6 +1,6 @@
 @top Document {
 	(
-		ValKeyword | SetKeyword | Opcode | PrimitiveType | Identifier |
+		Opcode | PrimitiveType | Identifier |
 		Number | String |
 		OpenSquareBracket | CloseSquareBracket |
 		OpenBrace | CloseBrace |
@@ -10,8 +10,6 @@
 	)*
 }
 
-ValKeyword { @specialize<Identifier, "val"> }
-SetKeyword { @specialize<Identifier, "set"> }
 PrimitiveType {
 	@specialize<Identifier,
 		"sht" | "int" | "lng" | "oct" | "hlf" | "flt" | "dbl" | "str" |
@@ -20,6 +18,7 @@ PrimitiveType {
 }
 Opcode {
 	@specialize<Identifier,
+		"val" | "set" |
 		"push" | "get" | "dup" | "swap" | "shrink" | "truncate" |
 		"add" | "sub" | "mul" | "div" | "mod" | "neg" | "inc" | "dec" |
 		"gt" | "lt" | "ge" | "le" | "eq" | "neq" | "shl" | "shr" |

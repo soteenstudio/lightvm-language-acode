@@ -1,5 +1,5 @@
 import plugin from "../plugin.json";
-import { parser } from "./lightvm-parser";
+import { parser } from "./language/lightvm-parser";
 
 class AcodePlugin {
 	baseUrl = "";
@@ -17,9 +17,9 @@ class AcodePlugin {
 			name: "lightvm.showInstructionPointers",
 			description: "Show LightVM instruction pointers",
 			bindKey: {
-				win: "Shift-I",
-				linux: "Shift-I",
-				mac: "Shift-I",
+				win: "Ctrl-Alt-I",
+				linux: "Ctrl-Alt-I",
+				mac: "Ctrl-Alt-I",
 			},
 			readOnly: true,
 			requiresView: true,
@@ -29,15 +29,10 @@ class AcodePlugin {
 				const { syntaxTree } = acode.require("@codemirror/language");
 				const state = view.state as any;
 				const entries: string[] = [];
-				const instructionNodes = new Set([
-					"ValKeyword",
-					"SetKeyword",
-					"Opcode",
-				]);
 				const cursor = syntaxTree(state).cursor();
 
 				do {
-					if (!instructionNodes.has(cursor.name)) continue;
+					if (cursor.name !== "Opcode") continue;
 
 					const line = state.doc.lineAt(cursor.from);
 					const text = state.doc.sliceString(cursor.from, cursor.to);
@@ -47,7 +42,7 @@ class AcodePlugin {
 				} while (cursor.next());
 
 				const explanation =
-					"IP values are zero-based source bytecode indexes before optimization. Line and column are 1-based.";
+					"Positions are zero-based source bytecode indexes before optimization.";
 				const message = entries.length
 					? `${explanation}\n\n${entries.join("\n")}`
 					: `${explanation}\n\nNo LightVM instructions found.`;
@@ -63,8 +58,8 @@ class AcodePlugin {
 				"@codemirror/view",
 			);
 			const { styleTags, tags } = acode.require("@lezer/highlight");
-			const keywords = ["val", "set"];
 			const opcodes = [
+				"val", "set",
 				"push", "get", "dup", "swap", "shrink", "truncate",
 				"add", "sub", "mul", "div", "mod", "neg", "inc", "dec",
 				"gt", "lt", "ge", "le", "eq", "neq", "shl", "shr",
@@ -88,11 +83,6 @@ class AcodePlugin {
 				"i16", "i32", "i64", "i128", "f16", "f32", "f64",
 			];
 			const completionList = [
-				...keywords.map((label: string) => ({
-					label,
-					type: "keyword",
-					detail: "LightVM declaration keyword",
-				})),
 				...opcodes.map((label: string) => ({
 					label,
 					type: "keyword",
@@ -128,8 +118,6 @@ class AcodePlugin {
 					props: [
 						styleTags({
 							Opcode: tags.keyword,
-							ValKeyword: tags.keyword,
-							SetKeyword: tags.keyword,
 							PrimitiveType: tags.typeName,
 							Number: tags.number,
 							String: tags.string,
