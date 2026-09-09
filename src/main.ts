@@ -2,18 +2,37 @@ import plugin from "../plugin.json";
 
 class AcodePlugin {
 	baseUrl = "";
+	private editorLanguages?: Acode.EditorLanguages;
 
 	async init(
 		_page: Acode.WCPage,
 		_cacheFile: Acode.FileSystem,
 		_cacheFileUrl: string,
 	): Promise<void> {
-		// plugin initialisation
-    // Implement the lang logic here
+		this.editorLanguages = acode.require("editorLanguages");
+		this.editorLanguages.register("lightvm", "lvm", "LightVM", async () => {
+			const { StreamLanguage } = acode.require("@codemirror/language");
+			const { tags } = acode.require("@lezer/highlight");
+
+			return StreamLanguage.define({
+				token(stream) {
+					if (stream.match(/^\b(?:val|set)\b/)) {
+						return "lightvmKeyword";
+					}
+
+					stream.next();
+					return null;
+				},
+				tokenTable: {
+					lightvmKeyword: tags.keyword,
+				},
+			});
+		});
 	}
 
 	async destroy(): Promise<void> {
-		// plugin clean up
+		this.editorLanguages?.unregister("lightvm");
+		this.editorLanguages = undefined;
 	}
 }
 
