@@ -6,4 +6,12 @@ export const
   SetKeyword = 4,
   Opcode = 5,
   PrimitiveType = 6,
-  Character = 7
+  Number = 7,
+  String = 8,
+  OpenSquareBracket = 9,
+  CloseSquareBracket = 10,
+  OpenBrace = 11,
+  CloseBrace = 12,
+  OpenParenthesis = 13,
+  CloseParenthesis = 14,
+  Character = 15

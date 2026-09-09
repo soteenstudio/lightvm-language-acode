@@ -1,4 +1,13 @@
-@top Document { (ValKeyword | SetKeyword | Opcode | PrimitiveType | Identifier | Character)* }
+@top Document {
+	(
+		ValKeyword | SetKeyword | Opcode | PrimitiveType | Identifier |
+		Number | String |
+		OpenSquareBracket | CloseSquareBracket |
+		OpenBrace | CloseBrace |
+		OpenParenthesis | CloseParenthesis |
+		Character
+	)*
+}
 
 ValKeyword { @specialize<Identifier, "val"> }
 SetKeyword { @specialize<Identifier, "set"> }
@@ -28,8 +37,24 @@ Opcode {
 	>
 }
 
+OpenSquareBracket { "[" }
+CloseSquareBracket { "]" }
+OpenBrace { "{" }
+CloseBrace { "}" }
+OpenParenthesis { "(" }
+CloseParenthesis { ")" }
+
 @tokens {
 	Identifier { $[A-Za-z_] $[A-Za-z0-9_]* }
+	Number { @digit+ ("." @digit+)? }
+	String {
+		'"' (!["\\] | "\\" _)* '"' |
+		"'" (!['\\] | "\\" _)* "'"
+	}
 	Character { _ }
-	@precedence { Identifier, Character }
+	@precedence {
+		Identifier, Number, String,
+		"[", "]", "{", "}", "(", ")",
+		Character
+	}
 }
