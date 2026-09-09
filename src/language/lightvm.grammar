@@ -1,0 +1,61 @@
+@top Document {
+	(
+		Opcode | PrimitiveType | Identifier |
+		Number | String |
+		OpenSquareBracket | CloseSquareBracket |
+		OpenBrace | CloseBrace |
+		OpenParenthesis | CloseParenthesis |
+		Comment |
+		Character
+	)*
+}
+
+PrimitiveType {
+	@specialize<Identifier,
+		"sht" | "int" | "lng" | "oct" | "hlf" | "flt" | "dbl" | "str" |
+		"i16" | "i32" | "i64" | "i128" | "f16" | "f32" | "f64"
+	>
+}
+Opcode {
+	@specialize<Identifier,
+		"val" | "set" |
+		"push" | "get" | "dup" | "swap" | "shrink" | "truncate" |
+		"add" | "sub" | "mul" | "div" | "mod" | "neg" | "inc" | "dec" |
+		"gt" | "lt" | "ge" | "le" | "eq" | "neq" | "shl" | "shr" |
+		"rol" | "ror" | "and" | "or" | "xor" | "not" | "pow" | "powi" |
+		"powf" | "sin" | "cos" | "tan" | "sinh" | "cosh" | "tanh" |
+		"asin" | "acos" | "atan" | "atan2" | "asinh" | "acosh" | "atanh" |
+		"sqrt" | "cbrt" | "ln" | "log2" | "log10" | "exp" |
+		"print" | "println" | "stdin" | "stdout" | "stdoutln" |
+		"clear_screen" | "break" | "nop" |
+		"jump" | "if_false" | "func" | "call" | "return" | "stop" |
+		"make_obj" | "make_array" | "access" | "access_index" | "length" |
+		"typeof" | "concat" | "import" | "export" |
+		"set_prop" | "instantiate" | "inspect_obj" | "inspect_array" |
+		"to_short" | "to_integer" | "to_long" | "to_octa" | "to_half" |
+		"to_float" | "to_double" | "to_string"
+	>
+}
+
+OpenSquareBracket { "[" }
+CloseSquareBracket { "]" }
+OpenBrace { "{" }
+CloseBrace { "}" }
+OpenParenthesis { "(" }
+CloseParenthesis { ")" }
+
+@tokens {
+	Identifier { $[A-Za-z_] $[A-Za-z0-9_]* }
+	Number { @digit+ ("." @digit+)? }
+	String {
+		'"' (!["\\] | "\\" _)* '"' |
+		"'" (!['\\] | "\\" _)* "'"
+	}
+	Comment { ";;" ![\n\r]* }
+	Character { _ }
+	@precedence {
+		Identifier, Number, String, Comment,
+		"[", "]", "{", "}", "(", ")",
+		Character
+	}
+}
