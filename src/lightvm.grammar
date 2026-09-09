@@ -5,6 +5,7 @@
 		OpenSquareBracket | CloseSquareBracket |
 		OpenBrace | CloseBrace |
 		OpenParenthesis | CloseParenthesis |
+		Comment |
 		Character
 	)*
 }
@@ -51,9 +52,10 @@ CloseParenthesis { ")" }
 		'"' (!["\\] | "\\" _)* '"' |
 		"'" (!['\\] | "\\" _)* "'"
 	}
+	Comment { ";;" ![\n\r]* }
 	Character { _ }
 	@precedence {
-		Identifier, Number, String,
+		Identifier, Number, String, Comment,
 		"[", "]", "{", "}", "(", ")",
 		Character
 	}
