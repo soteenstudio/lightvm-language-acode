@@ -23,6 +23,10 @@ class AcodePlugin {
 							ValKeyword: tags.keyword,
 							SetKeyword: tags.keyword,
 							PrimitiveType: tags.typeName,
+							Number: tags.number,
+							String: tags.string,
+							"OpenSquareBracket CloseSquareBracket OpenBrace CloseBrace OpenParenthesis CloseParenthesis":
+								tags.punctuation,
 						}),
 					],
 				}),
