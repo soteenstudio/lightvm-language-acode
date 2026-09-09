@@ -19,6 +19,7 @@ class AcodePlugin {
 				parser: parser.configure({
 					props: [
 						styleTags({
+							Opcode: tags.keyword,
 							ValKeyword: tags.keyword,
 							SetKeyword: tags.keyword,
 						}),

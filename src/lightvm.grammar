@@ -1,7 +1,26 @@
-@top Document { (ValKeyword | SetKeyword | Identifier | Character)* }
+@top Document { (ValKeyword | SetKeyword | Opcode | Identifier | Character)* }
 
 ValKeyword { @specialize<Identifier, "val"> }
 SetKeyword { @specialize<Identifier, "set"> }
+Opcode {
+	@specialize<Identifier,
+		"push" | "get" | "dup" | "swap" | "shrink" | "truncate" |
+		"add" | "sub" | "mul" | "div" | "mod" | "neg" | "inc" | "dec" |
+		"gt" | "lt" | "ge" | "le" | "eq" | "neq" | "shl" | "shr" |
+		"rol" | "ror" | "and" | "or" | "xor" | "not" | "pow" | "powi" |
+		"powf" | "sin" | "cos" | "tan" | "sinh" | "cosh" | "tanh" |
+		"asin" | "acos" | "atan" | "atan2" | "asinh" | "acosh" | "atanh" |
+		"sqrt" | "cbrt" | "ln" | "log2" | "log10" | "exp" |
+		"print" | "println" | "stdin" | "stdout" | "stdoutln" |
+		"clear_screen" | "break" | "nop" |
+		"jump" | "if_false" | "func" | "call" | "return" | "stop" |
+		"make_obj" | "make_array" | "access" | "access_index" | "length" |
+		"typeof" | "concat" | "import" | "export" |
+		"set_prop" | "instantiate" | "inspect_obj" | "inspect_array" |
+		"to_short" | "to_integer" | "to_long" | "to_octa" | "to_half" |
+		"to_float" | "to_double" | "to_string"
+	>
+}
 
 @tokens {
 	Identifier { $[A-Za-z_] $[A-Za-z0-9_]* }
