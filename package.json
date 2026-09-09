@@ -1,11 +1,11 @@
 {
-  "name": "acode-plugin",
-  "version": "1.0.0",
+  "name": "lightvm-language",
+  "version": "0.1.0",
   "description": "TypeScript template for Acode plugins",
   "main": "dist/main.js",
-  "repository": "https://github.com/Acode-Foundation/AcodeTSTemplate.git",
-  "author": "Acode Foundation",
-  "license": "MIT",
+  "repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
+  "author": "SoTeen Studio",
+  "license": "Apache-2.0",
   "dependencies": {
     "@lezer/lr": "^1.4.10",
     "acode-plugin-types": "^1.12.9",
