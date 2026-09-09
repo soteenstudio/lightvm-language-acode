@@ -4,6 +4,7 @@
 
 ## Features
 
+- A custom icon for `.lvm` files in the file browser and editor tabs.
 - Syntax highlighting for the complete Acode LightVM opcode inventory, primitive types and aliases, numbers, strings, comments, and delimiters.
 - LightVM-aware opcode and primitive-type completions outside comments and strings.
 - Bracket matching, automatic closing, indentation, folding regions, and bracket pair colorization.

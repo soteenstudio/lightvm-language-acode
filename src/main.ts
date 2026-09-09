@@ -1,7 +1,6 @@
 import plugin from "../plugin.json";
 import { parser } from "./language/lightvm-parser";
 
-// Added icon to .lvm file
 class AcodePlugin {
 	baseUrl = "";
 	private editorLanguages?: Acode.EditorLanguages;
@@ -13,6 +12,7 @@ class AcodePlugin {
 		_cacheFile: Acode.FileSystem,
 		_cacheFileUrl: string,
 	): Promise<void> {
+		acode.addIcon("file_type_lvm", `${this.baseUrl}icon.png`);
 		this.editorLanguages = acode.require("editorLanguages");
 		this.commands = acode.require("commands");
 		this.commands.addCommand({
