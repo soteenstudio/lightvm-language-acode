@@ -14,4 +14,5 @@ export const
   CloseBrace = 12,
   OpenParenthesis = 13,
   CloseParenthesis = 14,
-  Character = 15
+  Comment = 15,
+  Character = 16

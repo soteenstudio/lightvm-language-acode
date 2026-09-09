@@ -13,10 +13,70 @@ class AcodePlugin {
 		this.editorLanguages = acode.require("editorLanguages");
 		this.editorLanguages.register("lightvm", "lvm", "LightVM", async () => {
 			const { LRLanguage, syntaxTree } = acode.require("@codemirror/language");
+			const { completeFromList } = acode.require("@codemirror/autocomplete");
 			const { Decoration, EditorView, ViewPlugin } = acode.require(
 				"@codemirror/view",
 			);
 			const { styleTags, tags } = acode.require("@lezer/highlight");
+			const keywords = ["val", "set"];
+			const opcodes = [
+				"push", "get", "dup", "swap", "shrink", "truncate",
+				"add", "sub", "mul", "div", "mod", "neg", "inc", "dec",
+				"gt", "lt", "ge", "le", "eq", "neq", "shl", "shr",
+				"rol", "ror", "and", "or", "xor", "not", "pow", "powi",
+				"powf", "sin", "cos", "tan", "sinh", "cosh", "tanh",
+				"asin", "acos", "atan", "atan2", "asinh", "acosh", "atanh",
+				"sqrt", "cbrt", "ln", "log2", "log10", "exp",
+				"print", "println", "stdin", "stdout", "stdoutln",
+				"clear_screen", "break", "nop",
+				"jump", "if_false", "func", "call", "return", "stop",
+				"make_obj", "make_array", "access", "access_index", "length",
+				"typeof", "concat", "import", "export",
+				"set_prop", "instantiate", "inspect_obj", "inspect_array",
+				"to_short", "to_integer", "to_long", "to_octa", "to_half",
+				"to_float", "to_double", "to_string",
+			];
+			const canonicalTypes = [
+				"sht", "int", "lng", "oct", "hlf", "flt", "dbl", "str",
+			];
+			const typeAliases = [
+				"i16", "i32", "i64", "i128", "f16", "f32", "f64",
+			];
+			const completionList = [
+				...keywords.map((label: string) => ({
+					label,
+					type: "keyword",
+					detail: "LightVM declaration keyword",
+				})),
+				...opcodes.map((label: string) => ({
+					label,
+					type: "keyword",
+					detail: "LightVM opcode",
+				})),
+				...canonicalTypes.map((label: string) => ({
+					label,
+					type: "type",
+					detail: "LightVM primitive type",
+				})),
+				...typeAliases.map((label: string) => ({
+					label,
+					type: "type",
+					detail: "LightVM primitive type alias",
+				})),
+			];
+			const completeLightVM = completeFromList(completionList);
+			const lightVMCompletions = (context: any) => {
+				const nodeName = syntaxTree(context.state).resolveInner(
+					context.pos,
+					-1,
+				).name;
+				if (nodeName === "Comment" || nodeName === "String") return null;
+
+				const prefix = context.matchBefore(/[A-Za-z_][A-Za-z0-9_]*$/);
+				if (!prefix && !context.explicit) return null;
+
+				return completeLightVM(context);
+			};
 
 			const language = LRLanguage.define({
 				parser: parser.configure({
@@ -28,6 +88,7 @@ class AcodePlugin {
 							PrimitiveType: tags.typeName,
 							Number: tags.number,
 							String: tags.string,
+							Comment: tags.lineComment,
 							"OpenSquareBracket CloseSquareBracket": tags.squareBracket,
 							"OpenParenthesis CloseParenthesis": tags.paren,
 							"OpenBrace CloseBrace": tags.brace,
@@ -110,7 +171,12 @@ class AcodePlugin {
 				".cm-lightvm-bracket-purple": { color: "#c678dd" },
 			});
 
-			return [language, rainbowBrackets, rainbowBracketTheme];
+			return [
+				language,
+				language.data.of({ autocomplete: lightVMCompletions }),
+				rainbowBrackets,
+				rainbowBracketTheme,
+			];
 		});
 	}
 
