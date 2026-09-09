@@ -4,4 +4,5 @@ export const
   ValKeyword = 2,
   Identifier = 3,
   SetKeyword = 4,
-  Character = 5
+  Opcode = 5,
+  Character = 6
