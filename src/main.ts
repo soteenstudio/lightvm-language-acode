@@ -1,4 +1,5 @@
 import plugin from "../plugin.json";
+import { parser } from "./lightvm-parser";
 
 class AcodePlugin {
 	baseUrl = "";
@@ -11,21 +12,18 @@ class AcodePlugin {
 	): Promise<void> {
 		this.editorLanguages = acode.require("editorLanguages");
 		this.editorLanguages.register("lightvm", "lvm", "LightVM", async () => {
-			const { StreamLanguage } = acode.require("@codemirror/language");
-			const { tags } = acode.require("@lezer/highlight");
+			const { LRLanguage } = acode.require("@codemirror/language");
+			const { styleTags, tags } = acode.require("@lezer/highlight");
 
-			return StreamLanguage.define({
-				token(stream) {
-					if (stream.match(/^\b(?:val|set)\b/)) {
-						return "lightvmKeyword";
-					}
-
-					stream.next();
-					return null;
-				},
-				tokenTable: {
-					lightvmKeyword: tags.keyword,
-				},
+			return LRLanguage.define({
+				parser: parser.configure({
+					props: [
+						styleTags({
+							ValKeyword: tags.keyword,
+							SetKeyword: tags.keyword,
+						}),
+					],
+				}),
 			});
 		});
 	}
