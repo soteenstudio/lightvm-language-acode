@@ -3,7 +3,7 @@
   "id": "soteenstudio.plugin.lightvm",
   "name": "LightVM Language",
   "main": "main.js",
-  "version": "0.1.0-alpha.9",
+  "version": "0.1.0",
   "readme": "readme.md",
   "changelogs": "changelogs.md",
   "repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
@@ -11,12 +11,12 @@
   "files": [],
   "minVersionCode": 290,
   "license": "Apache-2.0",
-  "keywords": [],
+  "keywords": ["lightvm", "highlighter", "suggestion"],
   "price": 0,
   "permissions": [],
   "author": {
-    "name": "",
-    "email": "",
-    "github": ""
+    "name": "SoTeen Studio",
+    "email": "soteenstudio@gmail.com",
+    "github": "https://github.com/soteenstudio"
   }
 }

@@ -17,9 +17,9 @@ class AcodePlugin {
 			name: "lightvm.showInstructionPointers",
 			description: "Show LightVM instruction pointers",
 			bindKey: {
-				win: "Ctrl-Alt-I",
-				linux: "Ctrl-Alt-I",
-				mac: "Ctrl-Alt-I",
+				win: "Shift-I",
+				linux: "Shift-I",
+				mac: "Shift-I",
 			},
 			readOnly: true,
 			requiresView: true,
