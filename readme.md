@@ -1,28 +1,20 @@
-# Acode TypeScript template
+# LightVM Language
 
-Official TypeScript template for Acode plugins.
-
-Read the [plugin docs](https://docs.acode.app/) before you start.
+Acode language support for LightVM v0.1.0-alpha.9 bytecode.
 
 ## Features
 
-- TypeScript with `acode-plugin-types`
-- esbuild bundling, watch + local serve
-- `plugin.zip` packaging from the repo root
+- Syntax highlighting for the complete Acode LightVM opcode inventory, primitive types and aliases, numbers, strings, comments, and delimiters.
+- LightVM-aware opcode and primitive-type completions outside comments and strings.
+- Bracket matching, automatic closing, indentation, folding regions, and bracket pair colorization.
+- Optional instruction-pointer inlay hints after each opcode.
 
-For a plugin UI example with Preact, see [acode-plugin-preact](https://github.com/Acode-Foundation/acode-plugin-preact).
+Files ending in `.lightvm`, `lightvmb`, `.lvm` and `.lvmb` are recognized automatically.
 
-## Scripts
+## Commands
 
-```sh
-npm install
-npm run dev        # watch, serve on :3000, rebuild plugin.zip
-npm run typecheck
-npm run build      # typecheck, bundle, write plugin.zip
-```
+Run **LightVM: Toggle Instruction Pointers** (`lightvm.showInstructionPointers`) from the Command Palette to show or hide `[IP n]` hints. Instruction pointers are numbered from zero in document order.
 
-In Acode, install from **Plugins → + → Remote** using:
+## Language support
 
-```
-http://<your-ip>:3000/plugin.zip
-```
+The extension supports canonical primitive types (`sht`, `int`, `lng`, `oct`, `hlf`, `flt`, `dbl`, `str`) and numeric aliases (`i16`, `i32`, `i64`, `i128`, `f16`, `f32`, `f64`). Line comments begin with `;;`.
