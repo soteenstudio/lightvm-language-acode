@@ -25,7 +25,7 @@
 		"unitry": "v0.1.0-alpha.0"
 	},
 	"scripts": {
-		"test": "unitry tests",
+		"test": "tsc -p tsconfig.test.json --noEmit && unitry tests",
 		"dev": "node esbuild.config.mjs --serve",
 		"generate:parser": "lezer-generator src/language/lightvm.grammar --output src/language/lightvm-parser.ts --typeScript",
 		"lint": "eslint \"src/**/*.ts\"",
