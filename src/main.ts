@@ -12,6 +12,7 @@
  * limitations under the License.
  */
 
+// Added unit test
 import plugin from "../plugin.json";
 import { createLightVMLanguage } from "./language/lightvm-language";
 
