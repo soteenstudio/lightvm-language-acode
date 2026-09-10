@@ -1,7 +1,6 @@
 import plugin from "../plugin.json";
 import { parser } from "./language/lightvm-parser";
 
-// Add snippet code
 class AcodePlugin {
 	baseUrl = "";
 	private editorLanguages?: Acode.EditorLanguages;
@@ -48,7 +47,9 @@ class AcodePlugin {
 		this.editorLanguages.register("lightvm", ["lvm", "lvmb", "lightvm", "lightvmb"], "LightVM", async () => {
 			const { foldService, indentService, LRLanguage, syntaxTree } =
 				acode.require("@codemirror/language");
-			const { completeFromList } = acode.require("@codemirror/autocomplete");
+			const { completeFromList, snippetCompletion } = acode.require(
+				"@codemirror/autocomplete",
+			);
 			const { Decoration, EditorView, ViewPlugin, WidgetType } = acode.require(
 				"@codemirror/view",
 			);
@@ -77,7 +78,25 @@ class AcodePlugin {
 			const typeAliases = [
 				"i16", "i32", "i64", "i128", "f16", "f32", "f64",
 			];
+			const snippetCompletions = [
+				snippetCompletion("push ${1:0}\nval ${2:variable}\nset ${2}", {
+					label: "variable",
+					type: "snippet",
+					detail: "Declare and assign a variable",
+				}),
+				snippetCompletion("get ${1:left}\nget ${2:right}\nadd ${3:int}", {
+					label: "add",
+					type: "snippet",
+					detail: "Add two variables",
+				}),
+				snippetCompletion("get ${1:variable}\nprintln", {
+					label: "println",
+					type: "snippet",
+					detail: "Print a variable with a newline",
+				}),
+			];
 			const completionList = [
+				...snippetCompletions,
 				...opcodes.map((label: string) => ({
 					label,
 					type: "keyword",
