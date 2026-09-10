@@ -1,3 +1,16 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 export const closingDelimiter: Record<string, string> = {
 	OpenSquareBracket: "CloseSquareBracket",
 	OpenParenthesis: "CloseParenthesis",
@@ -45,7 +58,7 @@ export function createDelimiterExtensions({
 			}
 		}
 		const previousIndent = previousLine
-			? /^\s*/.exec(previousLine.text)?.[0].length ?? 0
+			? (/^\s*/.exec(previousLine.text)?.[0].length ?? 0)
 			: 0;
 		const stack = delimiterStackBefore(context.state, line.from);
 		const beginsWithClose = /^\s*[\]\)}]/.test(line.text);
@@ -66,7 +79,11 @@ export function createDelimiterExtensions({
 			do {
 				const expectedClose = closingDelimiter[cursor.name];
 				if (expectedClose) {
-					stack.push({ close: expectedClose, from: cursor.from, to: cursor.to });
+					stack.push({
+						close: expectedClose,
+						from: cursor.from,
+						to: cursor.to,
+					});
 				} else if (closingDelimiters.has(cursor.name)) {
 					const opener = stack[stack.length - 1];
 					if (opener?.close !== cursor.name) continue;
@@ -75,7 +92,8 @@ export function createDelimiterExtensions({
 					if (
 						opener.from >= lineStart &&
 						opener.from <= lineEnd &&
-						state.doc.lineAt(opener.from).number < state.doc.lineAt(cursor.from).number
+						state.doc.lineAt(opener.from).number <
+							state.doc.lineAt(cursor.from).number
 					) {
 						return { from: opener.to, to: cursor.from };
 					}

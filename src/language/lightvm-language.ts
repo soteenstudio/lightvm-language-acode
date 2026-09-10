@@ -1,3 +1,16 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { parser } from "./lightvm-parser";
 import { createLightVMCompletions } from "./lightvm-completions";
 import {
@@ -14,14 +27,14 @@ export interface LightVMLanguage {
 }
 
 export function createLightVMLanguage(): LightVMLanguage {
-	const { foldService, indentService, LRLanguage, syntaxTree } =
-		acode.require("@codemirror/language");
+	const { foldService, indentService, LRLanguage, syntaxTree } = acode.require(
+		"@codemirror/language",
+	);
 	const { completeFromList, snippetCompletion } = acode.require(
 		"@codemirror/autocomplete",
 	);
-	const { Decoration, EditorView, ViewPlugin, WidgetType } = acode.require(
-		"@codemirror/view",
-	);
+	const { Decoration, EditorView, ViewPlugin, WidgetType } =
+		acode.require("@codemirror/view");
 	const { styleTags, tags } = acode.require("@lezer/highlight");
 
 	const language = LRLanguage.define({
