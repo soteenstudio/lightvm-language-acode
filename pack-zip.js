@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const jszip = require("jszip");
 
-const iconFile = path.join(__dirname, "icon.png");
+const iconFile = path.join(__dirname, "icon.svg");
 const licenseFile = path.join(__dirname, "LICENSE");
 const pluginJSON = path.join(__dirname, "plugin.json");
 const distFolder = path.join(__dirname, "dist");
@@ -16,7 +16,7 @@ const changelogDotMd = resolveMetadataFile(json.changelogs, [
 
 const zip = new jszip();
 
-zip.file("icon.png", fs.readFileSync(iconFile));
+zip.file("icon.svg", fs.readFileSync(iconFile));
 zip.file("plugin.json", fs.readFileSync(pluginJSON));
 
 if (fs.existsSync(licenseFile)) {
