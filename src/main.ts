@@ -1,6 +1,7 @@
 import plugin from "../plugin.json";
 import { parser } from "./language/lightvm-parser";
 
+// refactor this code!
 class AcodePlugin {
 	baseUrl = "";
 	private editorLanguages?: Acode.EditorLanguages;
