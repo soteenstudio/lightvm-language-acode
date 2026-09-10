@@ -453,13 +453,16 @@ export function createLightVMCompletions(
 			type: "snippet",
 		}),
 	];
+	const snippetLabels = new Set(snippetCompletions.map(({ label }) => label));
 	const completionList = [
 		...snippetCompletions,
-		...opcodes.map((label: string) => ({
-			label,
-			type: "keyword",
-			detail: "LightVM opcode",
-		})),
+		...opcodes
+			.filter((label: string) => !snippetLabels.has(label))
+			.map((label: string) => ({
+				label,
+				type: "keyword",
+				detail: "LightVM opcode",
+			})),
 		...canonicalTypes.map((label: string) => ({
 			label,
 			type: "type",
