@@ -1,22 +1,22 @@
 {
-  "$schema": "https://acode.app/schema/plugin/v0.1.0.json",
-  "id": "soteenstudio.plugin.lightvm",
-  "name": "LightVM Language",
-  "main": "main.js",
-  "version": "0.1.1",
-  "readme": "readme.md",
-  "changelogs": "changelogs.md",
-  "repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
-  "icon": "icon.png",
-  "files": [],
-  "minVersionCode": 290,
-  "license": "Apache-2.0",
-  "keywords": ["lightvm", "highlighter", "suggestion"],
-  "price": 0,
-  "permissions": [],
-  "author": {
-    "name": "SoTeen Studio",
-    "email": "soteenstudio@gmail.com",
-    "github": "https://github.com/soteenstudio"
-  }
+	"$schema": "https://acode.app/schema/plugin/v0.1.0.json",
+	"id": "soteenstudio.plugin.lightvm",
+	"name": "LightVM Language",
+	"main": "main.js",
+	"version": "0.1.1",
+	"readme": "readme.md",
+	"changelogs": "changelogs.md",
+	"repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
+	"icon": "icon.png",
+	"files": [],
+	"minVersionCode": 290,
+	"license": "Apache-2.0",
+	"keywords": ["lightvm", "highlighter", "suggestion"],
+	"price": 0,
+	"permissions": [],
+	"author": {
+		"name": "SoTeen Studio",
+		"email": "soteenstudio@gmail.com",
+		"github": "https://github.com/soteenstudio"
+	}
 }
