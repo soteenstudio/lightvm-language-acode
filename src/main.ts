@@ -6,13 +6,27 @@ class AcodePlugin {
 	private editorLanguages?: Acode.EditorLanguages;
 	private commands?: Acode.Commands;
 	private toggleInstructionPointers?: (view: any) => boolean;
+	private fileIconStyle?: HTMLStyleElement;
 
 	async init(
 		_page: Acode.WCPage,
 		_cacheFile: Acode.FileSystem,
 		_cacheFileUrl: string,
 	): Promise<void> {
-		acode.addIcon("file_type_lvm", `${this.baseUrl}icon.png`);
+		this.fileIconStyle = document.createElement("style");
+		this.fileIconStyle.textContent = `
+.file.file_type_lvm::before,
+.file.file_type_lvmb::before,
+.file.file_type_lightvm::before,
+.file.file_type_lightvmb::before {
+	content: "";
+	width: 1em;
+	height: 1em;
+	background-image: url(${JSON.stringify(`${this.baseUrl}icon.png`)});
+	background-size: contain;
+	background-repeat: no-repeat;
+}`;
+		document.head.appendChild(this.fileIconStyle);
 		this.editorLanguages = acode.require("editorLanguages");
 		this.commands = acode.require("commands");
 		this.commands.addCommand({
@@ -27,7 +41,7 @@ class AcodePlugin {
 			requiresView: true,
 			exec: (view) => this.toggleInstructionPointers?.(view) ?? false,
 		});
-		this.editorLanguages.register("lightvm", "lvm", "LightVM", async () => {
+		this.editorLanguages.register("lightvm", ["lvm", "lvmb", "lightvm", "lightvmb"], "LightVM", async () => {
 			const { foldService, indentService, LRLanguage, syntaxTree } =
 				acode.require("@codemirror/language");
 			const { completeFromList } = acode.require("@codemirror/autocomplete");
@@ -355,6 +369,8 @@ class AcodePlugin {
 	}
 
 	async destroy(): Promise<void> {
+		this.fileIconStyle?.remove();
+		this.fileIconStyle = undefined;
 		this.commands?.removeCommand("lightvm.showInstructionPointers");
 		this.commands = undefined;
 		this.toggleInstructionPointers = undefined;
