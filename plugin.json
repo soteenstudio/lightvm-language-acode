@@ -3,7 +3,7 @@
   "id": "soteenstudio.plugin.lightvm",
   "name": "LightVM Language",
   "main": "main.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "readme": "readme.md",
   "changelogs": "changelogs.md",
   "repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
