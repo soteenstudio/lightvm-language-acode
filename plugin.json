@@ -7,7 +7,7 @@
   "readme": "readme.md",
   "changelogs": "changelogs.md",
   "repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
-  "icon": "icon.svg",
+  "icon": "icon.png",
   "files": [],
   "minVersionCode": 290,
   "license": "Apache-2.0",
