@@ -4,13 +4,12 @@
 
 ## Features
 
-- A custom icon for `.lvm`, `.lvmb`, `.lightvm`, and `.lightvmb` files in the file browser and editor tabs.
 - Syntax highlighting for the complete Acode LightVM opcode inventory, primitive types and aliases, numbers, strings, comments, and delimiters.
 - LightVM-aware opcode and primitive-type completions outside comments and strings.
 - Bracket matching, automatic closing, indentation, folding regions, and bracket pair colorization.
 - Optional instruction-pointer inlay hints after each opcode.
 
-Files ending in `.lvm`, `.lvmb`, `.lightvm`, and `.lightvmb` are recognized automatically; each extension uses the custom icon and LightVM language support.
+Files ending in `.lightvm`, `lightvmb`, `.lvm` and `.lvmb` are recognized automatically.
 
 ## Commands
 
