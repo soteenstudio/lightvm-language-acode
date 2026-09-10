@@ -1,29 +1,39 @@
 {
-  "name": "lightvm-language",
-  "version": "0.1.0",
-  "description": "Acode language support for LightVM bytecode.",
-  "main": "dist/main.js",
-  "repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
-  "author": "SoTeen Studio",
-  "license": "Apache-2.0",
-  "dependencies": {
-    "@lezer/lr": "^1.4.10",
-    "acode-plugin-types": "^1.12.9",
-    "html-tag-js": "^2.4.15"
-  },
-  "devDependencies": {
-    "@lezer/generator": "^1.8.0",
-    "esbuild": "^0.27.2",
-    "jszip": "^3.10.1",
-    "typescript": "^5.9.3"
-  },
-  "scripts": {
-    "dev": "node esbuild.config.mjs --serve",
-    "generate:parser": "lezer-generator src/language/lightvm.grammar --output src/language/lightvm-parser.ts --typeScript",
-    "prebuild": "npm run generate:parser",
-    "build": "tsc --noEmit && node esbuild.config.mjs",
-    "pretypecheck": "npm run generate:parser",
-    "typecheck": "tsc --noEmit"
-  },
-  "browserslist": "cover 100%,not android < 5"
+	"name": "lightvm-language",
+	"version": "0.1.1",
+	"description": "Acode language support for LightVM bytecode.",
+	"main": "dist/main.js",
+	"repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
+	"author": "SoTeen Studio",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"@lezer/lr": "^1.4.10",
+		"acode-plugin-types": "^1.12.9",
+		"html-tag-js": "^2.4.15"
+	},
+	"devDependencies": {
+		"@lezer/generator": "^1.8.0",
+		"@tony.ganchev/eslint-plugin-header": "^3.4.4",
+		"@typescript-eslint/eslint-plugin": "^8.70.0",
+		"@typescript-eslint/parser": "^8.70.0",
+		"esbuild": "^0.27.2",
+		"eslint": "^10.10.0",
+		"eslint-config-prettier": "^10.1.8",
+		"jszip": "^3.10.1",
+		"prettier": "^3.9.6",
+		"typescript": "^5.9.3"
+	},
+	"scripts": {
+		"dev": "node esbuild.config.mjs --serve",
+		"generate:parser": "lezer-generator src/language/lightvm.grammar --output src/language/lightvm-parser.ts --typeScript",
+		"lint": "eslint \"src/**/*.ts\"",
+		"lint:fix": "npm run lint -- --fix",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"prebuild": "npm run generate:parser",
+		"build": "tsc --noEmit && node esbuild.config.mjs",
+		"pretypecheck": "npm run generate:parser",
+		"typecheck": "tsc --noEmit"
+	},
+	"browserslist": "cover 100%,not android < 5"
 }
