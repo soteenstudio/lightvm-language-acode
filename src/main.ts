@@ -21,9 +21,11 @@ class AcodePlugin {
 .file.file_type_lightvmb::before {
 	content: "";
 	display: inline-block;
-	width: 1.2em;
-	height: 1.2em;
+	width: 1em;
+	height: 1em;
 	vertical-align: middle;
+	font-size: 0;
+	line-height: 1;
 	background-image: url(${JSON.stringify(`${this.baseUrl}icon.svg`)});
 	background-position: center;
 	background-size: contain;
