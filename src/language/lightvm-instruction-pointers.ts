@@ -28,8 +28,11 @@ export function createInstructionPointerExtensions({
 	syntaxTree,
 }: InstructionPointerApis) {
 	class InstructionPointerWidget extends WidgetType {
-		constructor(private readonly index: number) {
+		private readonly index: number;
+
+		constructor(index: number) {
 			super();
+			this.index = index;
 		}
 
 		eq(other: InstructionPointerWidget) {
@@ -73,8 +76,10 @@ export function createInstructionPointerExtensions({
 		class {
 			decorations: any;
 			private enabled = false;
+			private readonly view: any;
 
-			constructor(private readonly view: any) {
+			constructor(view: any) {
+				this.view = view;
 				this.decorations = Decoration.none;
 				instructionPointerPlugins.set(view, this);
 			}

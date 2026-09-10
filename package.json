@@ -21,9 +21,11 @@
 		"eslint-config-prettier": "^10.1.8",
 		"jszip": "^3.10.1",
 		"prettier": "^3.9.6",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"unitry": "v0.1.0-alpha.0"
 	},
 	"scripts": {
+		"test": "unitry tests",
 		"dev": "node esbuild.config.mjs --serve",
 		"generate:parser": "lezer-generator src/language/lightvm.grammar --output src/language/lightvm-parser.ts --typeScript",
 		"lint": "eslint \"src/**/*.ts\"",
