@@ -20,9 +20,12 @@ class AcodePlugin {
 .file.file_type_lightvm::before,
 .file.file_type_lightvmb::before {
 	content: "";
+	display: inline-block;
 	width: 1em;
 	height: 1em;
+	vertical-align: middle;
 	background-image: url(${JSON.stringify(`${this.baseUrl}icon.png`)});
+	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;
 }`;
