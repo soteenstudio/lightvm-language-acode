@@ -12,15 +12,15 @@
  * limitations under the License.
  */
 
-import { parser } from "./lightvm-parser";
-import { createLightVMCompletions } from "./lightvm-completions";
+import { parser } from "./lightvm-parser.ts";
+import { createLightVMCompletions } from "./lightvm-completions.ts";
 import {
 	closingDelimiter,
 	closingDelimiters,
 	createDelimiterExtensions,
-} from "./lightvm-delimiters";
-import { createRainbowBracketExtensions } from "./lightvm-rainbow-brackets";
-import { createInstructionPointerExtensions } from "./lightvm-instruction-pointers";
+} from "./lightvm-delimiters.ts";
+import { createRainbowBracketExtensions } from "./lightvm-rainbow-brackets.ts";
+import { createInstructionPointerExtensions } from "./lightvm-instruction-pointers.ts";
 
 export interface LightVMLanguage {
 	extensions: any[];
