@@ -12,8 +12,8 @@
  * limitations under the License.
  */
 
-import plugin from "../plugin.json";
-import { createLightVMLanguage } from "./language/lightvm-language";
+import plugin from "../plugin.json" with { type: "json" };
+import { createLightVMLanguage } from "./language/lightvm-language.ts";
 
 const languageId = "lightvm";
 const commandId = "lightvm.showInstructionPointers";
@@ -85,7 +85,7 @@ class AcodePlugin {
 	}
 }
 
-if (window.acode) {
+if (typeof window !== "undefined" && window.acode) {
 	const acodePlugin = new AcodePlugin();
 
 	acode.setPluginInit(
