@@ -1,6 +1,7 @@
 {
 	"name": "lightvm-language",
 	"version": "0.1.1",
+	"type": "module",
 	"description": "Acode language support for LightVM bytecode.",
 	"main": "dist/main.js",
 	"repository": "https://github.com/soteenstudio/lightvm-language-acode.git",
@@ -21,9 +22,11 @@
 		"eslint-config-prettier": "^10.1.8",
 		"jszip": "^3.10.1",
 		"prettier": "^3.9.6",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"unitry": "v0.1.0-alpha.0"
 	},
 	"scripts": {
+		"test": "tsc -p tsconfig.test.json --noEmit && unitry tests",
 		"dev": "node esbuild.config.mjs --serve",
 		"generate:parser": "lezer-generator src/language/lightvm.grammar --output src/language/lightvm-parser.ts --typeScript",
 		"lint": "eslint \"src/**/*.ts\"",

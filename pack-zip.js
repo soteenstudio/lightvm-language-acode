@@ -1,6 +1,10 @@
-const path = require("path");
-const fs = require("fs");
-const jszip = require("jszip");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import JSZip from "jszip";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const iconFile = path.join(__dirname, "icon.png");
 const licenseFile = path.join(__dirname, "LICENSE");
@@ -17,7 +21,7 @@ const changelogDotMd = resolveMetadataFile(json.changelogs, [
 	"CHANGELOG.md",
 ]);
 
-const zip = new jszip();
+const zip = new JSZip();
 
 zip.file("icon.png", fs.readFileSync(iconFile));
 zip.file("plugin.json", fs.readFileSync(pluginJSON));

@@ -22,3 +22,11 @@ The extension supports canonical primitive types (`sht`, `int`, `lng`, `oct`, `h
 Opcode snippets include documented instruction arguments and `push` setup for values consumed from the stack. Every instruction emitted by an editor snippet is terminated with a semicolon. Press Tab to move through editable placeholders for values, names, types, counts, properties, modules, function metadata, aliases, and instruction-pointer targets. Required type arguments default to `int`.
 
 The `import`, `export`, and `instantiate` snippets are included for completeness, but these opcodes are marked as nightly by LightVM and their APIs may change.
+
+## Tests
+
+The project uses Unitry for unit tests. Run the test suite with:
+
+```bash
+npm test
+```
