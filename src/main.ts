@@ -41,7 +41,7 @@ class AcodePlugin {
 	width: 1.2em;
 	height: 1.2em;
 	vertical-align: middle;
-	background-image: url(${JSON.stringify(`${this.baseUrl}icon.png`)});
+	background-image: url(${JSON.stringify(`${this.baseUrl}fileicon.png`)});
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;

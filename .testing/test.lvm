@@ -1,0 +1,6 @@
+push 5;
+push 5;
+add int;
+push 12;
+mul int;
+println; ;; result: 10
